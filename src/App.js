@@ -3,13 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'materialize-css/dist/css/materialize.min.css';
 import './App.css';
 import Cart from './components/Cart/Cart'
+import ItemListContainer from './components/containers/ItemListContainer';
 
 
 function App() {
   return(
     <>
-    <NavBar/>
-    <Cart/>
+<ItemListContainer greeting={"Hola soy item list container"}/>
   </>
   )
 }
