@@ -2,7 +2,7 @@
 export const Cart = ()=> {
     return(
         <>
-        <i class="small material-icons">add_shopping_cart</i>
+        <i className="small material-icons">add_shopping_cart</i>
         </>
 )}
 
