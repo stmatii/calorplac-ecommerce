@@ -1,67 +1,11 @@
 import { useEffect, useState } from "react";
-import { getFetch } from "../utils/Mock";
+// import { getFetch } from "../utils/Mock";
 import ItemList from "../ItemList/ItemList";
 import { useParams } from 'react-router-dom'
+import { getFirestore } from "../../services/getFirebase";
+import { Carousel } from "react-bootstrap";
 
 
-// function ItemListContainer({greeting}) {
-// //     const [items, setItems] = useState([])
-
-// //     const { category } = useParams()
-
-// //     useEffect(() => {
-// //         if(category===undefined){
-// //             tarea.then((resp)=> setItems(resp))
-// //         }else{
-// //             tarea
-// //             .then((resp)=> setItems(resp.filter( r => category===r.categoria)) )
-// //         }
-// //     }, [category])
-// // console.log(items)
-
-// const [personas, setPersonas] = useState([])
-// const [loading, setLoading] = useState(true)
-
-// const { idCategory } = useParams ()
-
-// useEffect(() => {
-
-//     if (idCategory) {
-//        getFetch
-//         .then(respuesta =>{
-//             setPersonas(respuesta)
-//             // setPersonas(res.filter(pers => pers.categoria===idCategory))
-//      })
-//      .catch(error => console.log(error))
-//      .finally(()=> setLoading(false))
-        
-//     } else {
-//      getFetch
-//             .then(respuesta =>{
-//                 setPersonas(respuesta)
-//          })   
-//         .catch(error => console.log(error))
-//         .finally(()=> setLoading(false))
-//     }
-// }, [idCategory])
-
-// console.log(idCategory)
-
-// return (
-//     <div>
-//         <h1> {greeting}</h1>
-//      <h2>Soy componente Promesas</h2>
-//     { loading ?
-//         <h2>Cargando...</h2>
-//         :
-//     <ItemList personas={personas}/>
-//     }
-//     </div>
-//  )
-// }
-
-
-// export default ItemListContainer 
 
 function ItemListContainer({greeting}) { 
 
@@ -73,35 +17,53 @@ function ItemListContainer({greeting}) {
 
 
     useEffect(() => {
+        const dbQuery = getFirestore()
 
-        if (idCategory) {
-            getFetch
-            .then(respuesta =>{
-                setPersonas(respuesta.filter(pers => pers.categoria===idCategory))         
-            })
-            .catch(error => console.log(error))
-            .finally(()=> setLoading(false))
-            
-        } else {            
-            getFetch
-            .then(respuesta =>{
-                setPersonas(respuesta)         
-            })
-            .catch(error => console.log(error))
-            .finally(()=> setLoading(false))
-        }               
+        dbQuery.collection('items').get()
+        .then(resp => {
+            setPersonas( resp.docs.map(item => ({id: item.id, ...item.data()})) )
+        })
+        .catch(err => console.log(err))
+        .finally(() => setLoading(false))            
         
     }, [idCategory])
 
-        
 
     return (
         <div>             
             <h1> {greeting}</h1> 
             {/* <Input />            */}
-
-            { loading ? <h2>Cargando...</h2> :   <ItemList personas={personas} /> }              
-          
+            <Carousel>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src="https://akrybsgmno.cloudimg.io/v7/calorplac.com.ar/img/slider/banner.jpg?w=&h="
+                        alt="varios paneles"
+                        />
+                        <Carousel.Caption>
+                      </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src="https://akrybsgmno.cloudimg.io/v7/calorplac.com.ar/img/slider/banner%20cov19.jpg?w=&h="
+                        alt="mensaje salud"
+                        />
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src="https://akrybsgmno.cloudimg.io/v7/calorplac.com.ar/img/slider/3.jpg?w=&h="
+                        alt="niveles de consumo"
+                        />
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    </Carousel>
+                    <div><h2 className="text-center">Paneles Calefactores</h2></div>
+            { loading ? <h2>Cargando...</h2> : <ItemList personas={personas} /> }              
         </div>
     )
 }

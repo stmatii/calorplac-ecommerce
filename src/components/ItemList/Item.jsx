@@ -1,27 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom"
+import { Row , Col} from "react-bootstrap";
+
+import { Link } from "react-router-dom";
 
 const Item = ({persona}) => {
 
 
-    return (       
-            <div key={persona.id} className="card w-50 mt-5" >
-                    <div className="card-header">
-                        {persona.categoria}
+    return (   
+            <div key={persona.categoria} >              
+                <Row>
+                   <Col>
+                    <div className="card text-center">
+                       <p> Tipo de panel: {persona.categoryID} </p>
+                      
                     </div>
                     <div className="card-body">
-                        <img src={persona.foto} alt="foto panel" />
-                        {persona.kw}
-                       
+                        <img src={persona.imagenID} width="400" height="400" alt="foto panel" /> <br/>
+                        {persona.title} 
                     </div>
-                    <div className="card-footer">
-                        <Link to = '/detalle/producto'>
+                    <div className="card-footer text-muted">
+                        <Link to = {`/detalle/${persona.id}`}>
                             <button className="btn btn-outline-primary btn-block">
                                 Detalle
                             </button>
                         </Link>
                     </div>
-                    
+                    </Col>
+                    </Row>
                 </div>
         
     )

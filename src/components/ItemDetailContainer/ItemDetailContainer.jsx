@@ -1,28 +1,31 @@
 import {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
+import { getFirestore } from '../../services/getFirebase'
 import ItemDetail from '../ItemDetail/ItemDetail'
-import { getFetchNuevo } from '../utils/Mock2'
 
+function ItemDetailContainer() {
 
-
-
-const ItemDetailContainer = () => {
-    const [paneles, setPanel] = useState({})
+    const [panel, setPanel] = useState ({})
+    
     const { idProducto } = useParams()
 
     useEffect(() => {
-        getFetchNuevo
-    .then(resp =>  setPanel(resp))
-    .catch(err => console.log(err)) 
-    }, [])
+        const dbQuery = getFirestore()
+        const filterProducto = () =>{
+            if(idProducto){
+                dbQuery.collection('items').doc(idProducto).get()
+                .then(res => {
+                    setPanel({id: res.id, ...res.data()})
+                })
+                .catch(err => console.log(err))
+            }
+        }
+        filterProducto()       
+    }, [idProducto])
 
-console.log(idProducto)
-
-
-    
     return (
         <>
-           <ItemDetail paneles={paneles} />
+           <ItemDetail panel={panel} />
         </>
     )
 }
